@@ -1,0 +1,80 @@
+#!/usr/bin/env perl
+
+use v5.36;
+
+use constant {
+    PROGRAM => 'chunk-spec',
+    VERSION => '0.1.0',
+};
+
+use constant {
+    MODE_UNKNOWN => 'unknown',
+    MODE_LAYERED => 'layered',
+    MODE_FLAT => 'flat',
+};
+
+sub print_version() {
+    say VERSION;
+}
+
+sub print_help($stream) {
+    print $stream <<~EOL_HELP
+Usage: $0 [option] grammar-chunk.txt"
+
+Option:
+    -v    --version    Show version info
+    -h    --help       Show help info
+    -m    --mode       Set JSON schema as either layered or flat
+EOL_HELP
+}
+
+sub validate_mode($mode) {
+    return MODE_LAYERED if ($mode eq 'layered');
+    return MODE_FLAT if ($mode eq 'flat');
+    MODE_UNKNOWN;
+}
+
+if ((scalar @ARGV) < 1) {
+    say { \*STDERR } "Error: No input file";
+    say { \*STDERR } "";
+    print_help(\*STDERR);
+    exit 1;
+}
+
+my $mode = MODE_UNKNOWN;
+my $grammar_file;
+while (@ARGV) {
+    my $arg = shift @ARGV;
+
+    if ($arg eq '-v' or $arg eq '--version') {
+        print_version();
+        exit;
+    }
+    elsif ($arg eq '-h' or $arg eq '--help') {
+        print_help(\*STDOUT);
+        exit;
+    }
+    elsif ($arg eq '-m' or $arg eq '--mode') {
+        my $mode_arg = shift @ARGV;
+        $arg = shift @ARGV;
+        $mode = validate_mode($mode_arg);
+        if ($mode eq MODE_UNKNOWN) {
+            say { \*STDERR } "Error: Unknown mode: $mode_arg";
+            say { \*STDERR } "Available mode is layered and flat";
+            exit 1;
+        }
+    }
+    elsif (index($arg, '-') == 0) {
+        say { \*STDERR } "Error: Unknown argument: $arg";
+        say { \*STDERR } "";
+        print_help(\*STDERR);
+        exit 1;
+    }
+
+    $grammar_file = $arg;
+    last;
+}
+
+(-e $grammar_file) or die "Error: Grammar file not found: $grammar_file\n";
+
+say "[Shim] Parse and covert grammar file: $grammar_file";

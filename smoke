@@ -1,0 +1,53 @@
+#!/bin/sh
+
+CWD=$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd) || exit 1
+
+SMOKE_LIBRARY="${CWD}/tools/lib/smoke.sh"
+
+if [ -f "$SMOKE_LIBRARY" ]; then
+    . "$SMOKE_LIBRARY"
+else
+    echo "Error: Unable to load the smoke library: $SMOKE_LIBRARY" >&2
+    exit 1
+fi
+
+PROGRAM="${CWD}/bin/chunk-spec"
+
+if [ ! -x "$PROGRAM" ]; then
+    echo "$PROGRAM not exist" >&2
+    exit 1
+fi
+
+DEMO_SRC="${CWD}/demo"
+
+if [ ! -d "$DEMO_SRC" ]; then
+    echo "$DEMO_SRC not exist" >&2
+    exit 1
+fi
+
+# Disable DEBUG mode.
+export DEBUG=0
+
+FAILED_TESTS=0
+
+RUN_TEST() {
+    "$@" || FAILED_TESTS=$((FAILED_TESTS + 1))
+}
+
+RUN_TEST EXPECT_SUCCEED "$PROGRAM" -v
+RUN_TEST EXPECT_SUCCEED "$PROGRAM" --version
+RUN_TEST EXPECT_SUCCEED "$PROGRAM" -h
+RUN_TEST EXPECT_SUCCEED "$PROGRAM" --help
+RUN_TEST EXPECT_SUCCEED "$PROGRAM" -m layered demo/japanese-grammar-chunks.txt
+RUN_TEST EXPECT_FAIL "$PROGRAM" -m nested demo/japanese-grammar-chunks.txt
+RUN_TEST EXPECT_FAIL "$PROGRAM" --non-exist
+RUN_TEST EXPECT_FAIL "$PROGRAM"
+RUN_TEST EXPECT_FAIL "$PROGRAM" path/to/non-exist.txt
+RUN_TEST SMOKE_RUN "$PROGRAM" demo/japanese-grammar-chunks.txt
+
+if [ "$FAILED_TESTS" -ne 0 ]; then
+    echo "[Result] $FAILED_TESTS test(s) failed." >&2
+    exit 1
+fi
+
+echo "[Result] All tests passed successfully."
