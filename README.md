@@ -42,8 +42,6 @@ When implementing rule-based parsers for human languages, JSON is often preferre
   * `<Verb:TeForm>`: An abstract grammatical category (e.g., Part of Speech + Conjugation).
   * `て`, `い`, `ます`: Literal text or particles to be matched precisely.
 
----
-
 ## ChunkSpec to JSON
 
 Given the following ChunkSpec input rule:
@@ -82,6 +80,14 @@ This mode flattens the metadata properties directly into the root object, which 
   "semanticRole": "adverbial"
 }
 ```
+
+## ChunkSpec to Other Formats
+
+Currently not planned. However, an **Intermediate Representation (IR)** will be implemented for `ChunkSpec`, making future conversion to formats such as YAML, TOML, or others possible.
+
+## Linting
+
+`ChunkSpec` intentionally omits schema linting. If schema validation is important for your project, simply add a JSON / YAML / TOML schema linter to your pipeline.
 
 ## Language Examples
 
