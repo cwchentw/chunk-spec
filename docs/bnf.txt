@@ -1,0 +1,21 @@
+<rule>             ::= <comment_opt> <token_sequence> <metadata> ";"
+
+<token_sequence>   ::= <abstract_word> 
+                     | <word> 
+                     | <word> "," <token_sequence>
+
+<abstract_word>    ::= "<" <category> ">"
+                     | "<" <category> ":" <form> ">"
+
+<word>             ::= <string>
+
+
+<metadata>         ::= "&" <key> "=" <value> <metadata_tail>
+<metadata_tail>    ::= <ws_opt> "&" <key> "=" <value> <metadata_tail>
+                     | ε
+
+<comment_opt>      ::= <comment> <ws_opt> | ε
+<comment>          ::= "#" <free_text>
+
+<ws_opt>           ::= <whitespace> <ws_opt> | ε
+<whitespace>       ::= " " | "\n" | "\r" | "\t"
