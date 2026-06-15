@@ -2,6 +2,7 @@ package ChunkSpec::Token;
 
 use v5.36;
 
+
 use constant {
     TYPE    => 'type',
     CONTENT => 'content',
@@ -20,6 +21,7 @@ use constant {
     TYPE_TOKEN_SEPARATOR     => 'token_separator',
     TYPE_METADATA            => 'metadata',
 };
+
 
 sub new($class) {
     my $self = {};

@@ -4,10 +4,12 @@ use v5.36;
 
 use ChunkSpec::Token;
 
+
 use constant {
     TOKENS => 'tokens',
     INDEX => 'index',
 };
+
 
 sub new($class) {
     my $self = {};
