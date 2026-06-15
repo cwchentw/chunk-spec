@@ -32,11 +32,12 @@ When implementing rule-based parsers for human languages, JSON is often preferre
 
 ```text
 # A grammar chunk rule consists of a token sequence followed by metadata key-value pairs
-<token sequence>&key1=value1&key2=value2&key3=value3
+<token sequence>&key1=value1&key2=value2&key3=value3;
 ```
 
 * `#`: Indicates a comment line.
 * `&key=value`: Standard query-string-like syntax to attach customizable metadata to the chunk.
+* `;`: The end of a chunk rule.
 * **Token Sequences**:
   * `<Verb:TeForm>,て,い,ます`: A sequence of tokens that forms a single grammar chunk.
   * `<Verb:TeForm>`: An abstract grammatical category (e.g., Part of Speech + Conjugation).
@@ -95,28 +96,31 @@ Currently not planned. However, an **Intermediate Representation (IR)** will be 
 
 ```text
 # Adverbial indicating the desire to perform an action.
-想要,去,<Verb>&meaning=want to act&chunkType=adverbial
+想要,去,<Verb>&meaning=want to act&chunkType=adverbial;
 ```
 
 ### Japanese
 
 ```text
 # Polite form expressing the present continuous tense.
-<Verb:Ren'youkei>,て,い,ます&meaning=be doing&chunkType=compound_predicate&politeness=formal
+<Verb:Ren'youkei>,て,い,ます&meaning=be doing
+&chunkType=compound_predicate&politeness=formal;
 ```
 
 ### Korean
 
 ```text
 # Formal present tense ending.
-<Verb|Adjective>,니다&meaning=formal present tense ending&requireBatchim=false&fusionJamo=ㅂ&politeness=formal&note=Attaches to verb/adjective roots without a final consonant.
+<Verb|Adjective>,니다&meaning=formal present tense ending
+&requireBatchim=false&fusionJamo=ㅂ&politeness=formal
+&note=Attaches to verb/adjective roots without a final consonant.;
 ```
 
 ### English
 
 ```text
 # Present future intention.
-is,going,to,<Verb:BaseForm>&meaning=be going to do something&chunkType=predicate
+is,going,to,<Verb:BaseForm>&meaning=be going to do something&chunkType=predicate;
 ```
 
 ## License

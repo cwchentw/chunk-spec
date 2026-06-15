@@ -3,16 +3,20 @@
 @mode=layered
 
 # Present continuous tense (action in progress)
-<Verb:Ren'youkei>,て,い,ます&meaning=be acting something&chunkType=compound_predicate&politeness=formal
+<Verb:Ren'youkei>,て,い,ます&meaning=be acting something
+&chunkType=compound_predicate&politeness=formal;
 
 # Completion or regret (action completed)
-<Verb:Ren'youkei>,て,しまう&meaning=completed/ended up doing&chunkType=compound_predicate
+<Verb:Ren'youkei>,て,しまう&meaning=completed/ended up doing
+&chunkType=compound_predicate;
 
 # Negative form (not...)
-<Adjective:Stem>,く,ない&meaning=negative&chunkType=adjective_phrase&negation=true
+<Adjective:Stem>,く,ない&meaning=negative&chunkType=adjective_phrase
+&negation=true;
 
 # Subject marker (topic marker)
-<Noun>,は&meaning=subject/topic marker&chunkType=noun_phrase
+<Noun>,は&meaning=subject/topic marker&chunkType=noun_phrase;
 
 # Obligation expression (must do / have to do)
-<Verb:Mizenkei>,なければ,ならない&meaning=must do&chunkType=compound_predicate&modality=obligation
+<Verb:Mizenkei>,なければ,ならない&meaning=must do
+&chunkType=compound_predicate&modality=obligation;
