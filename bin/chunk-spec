@@ -1,6 +1,14 @@
 #!/usr/bin/env perl
 
 use v5.36;
+use utf8;
+
+binmode(STDOUT, ':utf8');
+
+use FindBin;
+use lib "$FindBin::Bin/../lib";
+
+use ChunkSpec::Lexer;
 
 use constant {
     PROGRAM => 'chunk-spec',
@@ -82,4 +90,20 @@ while (@ARGV) {
 
 (-e $grammar_file) or die "Error: Grammar file not found: $grammar_file\n";
 
-say "[Shim] Parse and covert grammar file: $grammar_file";
+open(my $FH, '<:encoding(UTF-8)', $grammar_file) or die "Unable to open $grammar_file";
+
+my $lexer = ChunkSpec::Lexer->new();
+my $line_number = 1;
+
+while (my $line = <$FH>) {
+    $lexer->lex($line, $line_number);
+
+    $line_number++;
+}
+
+close $FH;
+
+while ($lexer->has_next()) {
+    my $t = $lexer->next();
+    say $t->format();
+}
