@@ -66,6 +66,21 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
+        elsif (is_abstract_word_union($peek)) {
+            my $t = ChunkSpec::Token->new();
+
+            $t->set_type(ChunkSpec::Token->TYPE_ABSTRACT_WORD_UNION);
+            $t->set_content($peek);
+
+            $t->set_line_number($l);
+            $t->set_column_number($i + 1);
+
+            $j++;
+
+            $self->add_token($t);
+
+            $i = $j;
+        }
         elsif (is_token_seperator($peek)) {
             my $t = ChunkSpec::Token->new();
 
@@ -219,6 +234,10 @@ sub is_abstract_word_form($s) {
     $s eq ':';
 }
 
+sub is_abstract_word_union($s) {
+    $s eq '|';
+}
+
 sub is_token_seperator($s) {
     $s eq ',';
 }
@@ -246,6 +265,7 @@ sub is_unknown($s) {
         \;      # Statement
         \<\>    # Abstract word paren
         \:      # Abstract word form
+        \|      # Abstract word union
         \,      # Token sequence
         \&      # Metadata
         \=      # Assignment

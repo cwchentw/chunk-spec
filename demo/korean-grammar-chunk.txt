@@ -1,0 +1,4 @@
+# Formal present tense ending.
+<Verb|Adjective>,니다&meaning=formal present tense ending
+&requireBatchim=false&fusionJamo=ㅂ&politeness=formal
+&note=Attaches to verb/adjective roots without a final consonant.;
