@@ -10,6 +10,7 @@ use constant {
 
 sub new($class) {
     my $self = $class->SUPER::new();
+    $self->set_type(ChunkSpec::AST->TYPE_ABSTRACT_WORD);
     bless $self, $class;
 }
 

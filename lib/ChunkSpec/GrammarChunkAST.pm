@@ -11,6 +11,7 @@ use constant {
 
 sub new($class) {
     my $self = $class->SUPER::new();
+    $self->set_type(ChunkSpec::StatementAST->TYPE_GRAMMAR_CHUNK_STATEMENT);
     $self->{PATTERN} = [];
     bless $self, $class;
 }

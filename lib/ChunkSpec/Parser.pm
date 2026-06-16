@@ -5,6 +5,7 @@ use v5.36;
 
 use ChunkSpec::AST;
 use ChunkSpec::AbstractWordAST;
+use ChunkSpec::AbstractWordCategoryAST;
 use ChunkSpec::StatementAST;
 use ChunkSpec::GrammarChunkAST;
 
@@ -62,7 +63,6 @@ sub parse_comment_statement($self, $lexer) {
 
 sub parse_grammar_chunk_statement($self, $lexer) {
     my $stmt = ChunkSpec::GrammarChunkAST->new();
-    $stmt->set_type(ChunkSpec::StatementAST->TYPE_GRAMMAR_CHUNK_STATEMENT);
 
     while ($lexer->has_next()) {
         my $peek = $lexer->peek();
@@ -136,13 +136,11 @@ sub parse_abstract_word_expression($self, $lexer) {
 
 sub parse_abstract_word($self, $lexer) {
     my $word = ChunkSpec::AbstractWordAST->new();
-    $word->set_type(ChunkSpec::AST->TYPE_ABSTRACT_WORD);
 
     my $peek = $lexer->peek();
 
     if ($peek->is_text()) {
-        my $category = ChunkSpec::AST->new();
-        $category->set_type(ChunkSpec::AST->TYPE_ABSTRACT_WORD_CATEGORY);
+        my $category = ChunkSpec::AbstractWordCategoryAST->new();
         $category->add_child($peek);
 
         $word->add_child($category);
