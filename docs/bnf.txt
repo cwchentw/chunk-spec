@@ -4,11 +4,14 @@
                      | <word> 
                      | <word> "," <token_sequence>
 
-<abstract_word>    ::= "<" <category> ">"
-                     | "<" <category> ":" <form> ">"
+<abstract_word>    ::= "<" <category_expr> ">"
+                     | "<" <category_expr> ":" <form> ">"
+
+<category_expr>    ::= <category> 
+
+                     | <category> "|" <category_expr>
 
 <word>             ::= <string>
-
 
 <metadata>         ::= "&" <key> "=" <value> <metadata_tail>
 <metadata_tail>    ::= <ws_opt> "&" <key> "=" <value> <metadata_tail>
