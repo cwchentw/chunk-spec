@@ -22,7 +22,24 @@ sub lex($self, $s, $l) {
         if (is_comment($peek)) {
             my $t = ChunkSpec::Token->new();
 
+            while ($j < $len && !is_newline(substr($s, $j, 1))) {
+                $j++;
+            }
+
             $t->set_type(ChunkSpec::Token->TYPE_COMMENT);
+            $t->set_content(substr($s, $i, $j - $i));
+
+            $t->set_line_number($l);
+            $t->set_column_number($i + 1);
+
+            $self->add_token($t);
+
+            $i = $j;
+        }
+        elsif (is_abstract_word_paren($peek)) {
+            my $t = ChunkSpec::Token->new();
+
+            $t->set_type(ChunkSpec::Token->TYPE_ABSTRACT_WORD_PAREN);
             $t->set_content($peek);
 
             $t->set_line_number($l);
@@ -34,10 +51,10 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
-        elsif (is_abstract_word_paren($peek)) {
+        elsif (is_abstract_word_form($peek)) {
             my $t = ChunkSpec::Token->new();
 
-            $t->set_type(ChunkSpec::Token->TYPE_ABSTRACT_WORD_PAREN);
+            $t->set_type(ChunkSpec::Token->TYPE_ABSTRACT_WORD_FORM);
             $t->set_content($peek);
 
             $t->set_line_number($l);
@@ -79,18 +96,16 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
-        elsif (is_space($peek)) {
+        elsif (is_assignment($peek)) {
             my $t = ChunkSpec::Token->new();
 
-            while ($j < $len && is_space(substr($s, $j, 1))) {
-                $j++;
-            }
-
-            $t->set_type(ChunkSpec::Token->TYPE_SPACE);
-            $t->set_content(substr($s, $i, $j - $i));
+            $t->set_type(ChunkSpec::Token->TYPE_ASSIGNMENT);
+            $t->set_content($peek);
 
             $t->set_line_number($l);
             $t->set_column_number($i + 1);
+
+            $j++;
 
             $self->add_token($t);
 
@@ -126,6 +141,21 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
+        elsif (is_compiler_directive($peek)) {
+            my $t = ChunkSpec::Token->new();
+
+            $t->set_type(ChunkSpec::Token->TYPE_COMPILER_DIRECTIVE);
+            $t->set_content($peek);
+
+            $t->set_line_number($l);
+            $t->set_column_number($i + 1);
+
+            $j++;
+
+            $self->add_token($t);
+
+            $i = $j;
+        }
         elsif (is_text($peek)) {
             my $t = ChunkSpec::Token->new();
 
@@ -143,8 +173,26 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
+        elsif (is_unknown($peek)) {
+            my $t = ChunkSpec::Token->new();
+
+            while ($j < $len && is_unknown(substr($s, $j, 1))) {
+                $j++;
+            }
+
+            $t->set_type(ChunkSpec::Token->TYPE_UNKNOWN);
+            $t->set_content(substr($s, $i, $j - $i));
+
+            $t->set_line_number($l);
+            $t->set_column_number($i + 1);
+
+            $self->add_token($t);
+
+            $i = $j;
+        }
         else {
-            # Discard anything else.
+            # Edge cases.
+            # Discard them if any.
             $j++;
             $i = $j;
         }
@@ -152,7 +200,7 @@ sub lex($self, $s, $l) {
 }
 
 sub is_comment($s) {
-    $s eq "#";
+    $s eq '#';
 }
 
 sub is_newline($s) {
@@ -160,27 +208,51 @@ sub is_newline($s) {
 }
 
 sub is_statement($s) {
-    $s eq ";";
+    $s eq ';';
 }
 
 sub is_abstract_word_paren($s) {
-    $s eq "<" or $s eq ">";
+    $s eq '<' or $s eq '>';
+}
+
+sub is_abstract_word_form($s) {
+    $s eq ':';
 }
 
 sub is_token_seperator($s) {
-    $s eq ",";
+    $s eq ',';
 }
 
 sub is_metadata($s) {
-    $s eq "&";
+    $s eq '&';
+}
+
+sub is_assignment($s) {
+    $s eq '=';
+}
+
+sub is_compiler_directive($s) {
+    $s eq '@';
 }
 
 sub is_text($s) {
-    $s =~ /[\'\_\-\p{L}\p{N}]/;
+    $s =~ /[\'\_\-\p{L}\p{N} \t\/]/;
 }
 
-sub is_space($s) {
-    $s=~ /[ \t]/;
+sub is_unknown($s) {
+    $s !~ /[
+        \#      # Comment
+        \n      # Newline
+        \;      # Statement
+        \<\>    # Abstract word paren
+        \:      # Abstract word form
+        \,      # Token sequence
+        \&      # Metadata
+        \=      # Assignment
+        \@      # Compiler directive
+        '\_\-\p{L}\p{N}\ \t\/  # Text
+    ]/x;
 }
+
 
 1;
