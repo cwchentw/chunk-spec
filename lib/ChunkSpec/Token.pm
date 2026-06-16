@@ -24,4 +24,12 @@ sub new($class) {
     bless $self, $class;
 }
 
+sub is_comment($self) {
+    $self->type() eq TYPE_COMMENT;
+}
+
+sub is_newline($self) {
+    $self->type() eq TYPE_NEWLINE;
+}
+
 1;

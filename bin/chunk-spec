@@ -83,6 +83,14 @@ close $FH;
 my $parser = ChunkSpec::Parser->new();
 $parser->parse($lexer);
 
+while ($parser->has_next()) {
+    my $ast = $parser->peek();
+
+    say $ast->format();
+
+    $parser->next();
+}
+
 
 sub print_version() {
     say VERSION;
