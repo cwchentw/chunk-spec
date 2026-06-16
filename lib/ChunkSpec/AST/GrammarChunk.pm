@@ -1,5 +1,5 @@
-package ChunkSpec::GrammarChunkAST;
-use parent 'ChunkSpec::StatementAST';
+package ChunkSpec::AST::GrammarChunk;
+use parent 'ChunkSpec::AST::Statement';
 
 use v5.36;
 
@@ -11,7 +11,7 @@ use constant {
 
 sub new($class) {
     my $self = $class->SUPER::new();
-    $self->set_type(ChunkSpec::StatementAST->TYPE_GRAMMAR_CHUNK_STATEMENT);
+    $self->set_type(ChunkSpec::AST::Statement->TYPE_GRAMMAR_CHUNK_STATEMENT);
     $self->{PATTERN} = [];
     bless $self, $class;
 }

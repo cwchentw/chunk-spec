@@ -1,4 +1,4 @@
-package ChunkSpec::AbstractWordAST;
+package ChunkSpec::AST::AbstractWord;
 use parent 'ChunkSpec::AST';
 
 use v5.36;

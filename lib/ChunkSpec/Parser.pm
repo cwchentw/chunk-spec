@@ -4,10 +4,11 @@ use parent 'Parser';
 use v5.36;
 
 use ChunkSpec::AST;
-use ChunkSpec::AbstractWordAST;
-use ChunkSpec::AbstractWordCategoryAST;
-use ChunkSpec::StatementAST;
-use ChunkSpec::GrammarChunkAST;
+use ChunkSpec::AST::AbstractWord;
+use ChunkSpec::AST::AbstractWordCategory;
+use ChunkSpec::AST::AbstractWordForm;
+use ChunkSpec::AST::Statement;
+use ChunkSpec::AST::GrammarChunk;
 
 
 sub new($class) {
@@ -33,8 +34,8 @@ sub parse($self, $lexer) {
 }
 
 sub parse_comment_statement($self, $lexer) {
-    my $stmt = ChunkSpec::StatementAST->new();
-    $stmt->set_type(ChunkSpec::StatementAST->TYPE_COMMENT_STATEMENT);
+    my $stmt = ChunkSpec::AST::Statement->new();
+    $stmt->set_type(ChunkSpec::AST::Statement->TYPE_COMMENT_STATEMENT);
 
     while ($lexer->has_next()) {
         my $peek = $lexer->peek();
@@ -62,7 +63,7 @@ sub parse_comment_statement($self, $lexer) {
 }
 
 sub parse_grammar_chunk_statement($self, $lexer) {
-    my $stmt = ChunkSpec::GrammarChunkAST->new();
+    my $stmt = ChunkSpec::AST::GrammarChunk->new();
 
     while ($lexer->has_next()) {
         my $peek = $lexer->peek();
@@ -135,12 +136,12 @@ sub parse_abstract_word_expression($self, $lexer) {
 }
 
 sub parse_abstract_word($self, $lexer) {
-    my $word = ChunkSpec::AbstractWordAST->new();
+    my $word = ChunkSpec::AST::AbstractWord->new();
 
     my $peek = $lexer->peek();
 
     if ($peek->is_text()) {
-        my $category = ChunkSpec::AbstractWordCategoryAST->new();
+        my $category = ChunkSpec::AST::AbstractWordCategory->new();
         $category->add_child($peek);
 
         $word->add_child($category);
@@ -155,8 +156,7 @@ sub parse_abstract_word($self, $lexer) {
             $peek = $lexer->peek();
 
             if ($peek->is_text()) {
-                my $form = ChunkSpec::AST->new();
-                $form->set_type(ChunkSpec::AST->TYPE_ABSTRACT_WORD_FORM);
+                my $form = ChunkSpec::AST::AbstractWordForm->new();
                 $form->add_child($peek);
 
                 $word->add_child($form);

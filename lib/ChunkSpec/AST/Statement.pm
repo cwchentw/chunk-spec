@@ -1,4 +1,4 @@
-package ChunkSpec::StatementAST;
+package ChunkSpec::AST::Statement;
 use parent 'AST';
 
 use v5.36;
