@@ -9,6 +9,7 @@ use FindBin;
 use lib "$FindBin::Bin/../lib";
 
 use ChunkSpec::Lexer;
+use ChunkSpec::Parser;
 
 
 use constant {
@@ -79,10 +80,8 @@ while (my $line = <$FH>) {
 
 close $FH;
 
-while ($lexer->has_next()) {
-    my $t = $lexer->next();
-    say $t->format();
-}
+my $parser = ChunkSpec::Parser->new();
+$parser->parse($lexer);
 
 
 sub print_version() {
