@@ -156,21 +156,6 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
-        elsif (is_compiler_directive($peek)) {
-            my $t = ChunkSpec::Token->new();
-
-            $t->set_type(ChunkSpec::Token->TYPE_COMPILER_DIRECTIVE);
-            $t->set_content($peek);
-
-            $t->set_line_number($l);
-            $t->set_column_number($i + 1);
-
-            $j++;
-
-            $self->add_token($t);
-
-            $i = $j;
-        }
         elsif (is_text($peek)) {
             my $t = ChunkSpec::Token->new();
 
@@ -248,10 +233,6 @@ sub is_metadata($s) {
 
 sub is_assignment($s) {
     $s eq '=';
-}
-
-sub is_compiler_directive($s) {
-    $s eq '@';
 }
 
 sub is_text($s) {

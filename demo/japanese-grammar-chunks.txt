@@ -1,7 +1,5 @@
 # Japanese grammar chunks in ChunkSpec.
 
-@mode=layered;
-
 # Present continuous tense (action in progress)
 <Verb:Ren'youkei>,て,い,ます&meaning=be acting something
 &chunkType=compound_predicate&politeness=formal;

@@ -48,39 +48,23 @@ When implementing rule-based parsers for human languages, JSON is often preferre
 Given the following ChunkSpec input rule:
 
 ```text
-# DSL Source Example
-一起,去,<Verb>&meaning=together action&chunkType=predicate&semanticRole=adverbial
+一起,去,<Verb>&meaning=action done together&chunkType=predicate&semanticRole=adverbial
 ```
 
-Depending on the `@mode` directive, the parser outputs the structure in either a nested or an unnested format:
-
-### Layered Mode (`@mode=layered`)
-
-This mode separates the structural syntax pattern from its semantic properties, keeping metadata neatly encapsulated.
+`ChunkSpec` processes the rule above and generates the following JSON structure:
 
 ```json
 {
   "pattern": ["一起", "去", { "category": "Verb" }],
   "metadata": {
-    "meaning": "together action",
+    "meaning": "action done together",
     "chunkType": "predicate",
     "semanticRole": "adverbial"
   }
 }
 ```
 
-### Flat Mode (`@mode=flat`)
-
-This mode flattens the metadata properties directly into the root object, which can be useful for simple key-value lookups or database storage.
-
-```json
-{
-  "pattern": ["一起", "去", { "category": "Verb" }],
-  "meaning": "together action",
-  "chunkType": "predicate",
-  "semanticRole": "adverbial"
-}
-```
+Since downstream requirements vary, users need to implement their own JSON-to-JSON adapters to integrate this output into their specific projects.
 
 ## ChunkSpec to Other Formats
 

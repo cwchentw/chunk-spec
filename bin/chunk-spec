@@ -104,7 +104,6 @@ Option:
     -v    --version    Show version info
     -h    --help       Show help info
 
-    -m    --mode       Set output schema as either layered or flat
     -g    --debug      Keep line number for debugging purpose (Umimplemented)
     -l    --lint       Check syntax only (Unimplemented)
     -json --emit-json  Emit JSON (Unimplemented)
