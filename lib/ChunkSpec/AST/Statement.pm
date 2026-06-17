@@ -1,5 +1,5 @@
 package ChunkSpec::AST::Statement;
-use parent 'AST';
+use parent 'Parse::AST';
 
 use v5.36;
 

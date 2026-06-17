@@ -1,5 +1,5 @@
 package ChunkSpec::Lexer;
-use parent 'Lexer';
+use parent 'Parse::Lexer';
 
 use v5.36;
 

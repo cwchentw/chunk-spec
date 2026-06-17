@@ -1,5 +1,5 @@
 package  ChunkSpec::Parser;
-use parent 'Parser';
+use parent 'Parse::Parser';
 
 use v5.36;
 
