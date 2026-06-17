@@ -11,10 +11,11 @@ use constant {
 
     TYPE_COMMENT => 'comment',
 
-    TYPE_ABSTRACT_WORD_PAREN => 'abstract_word_paren',
-    TYPE_ABSTRACT_WORD_FORM  => 'abstract_word_form',
-    TYPE_ABSTRACT_WORD_UNION => 'abstract_word_union',
-    TYPE_TOKEN_SEPARATOR     => 'token_separator',
+    TYPE_ABSTRACT_WORD_PAREN           => 'abstract_word_paren',
+    TYPE_ABSTRACT_WORD_FORM_SEPARATOR  => 'abstract_word_form_seperator',
+    TYPE_ABSTRACT_WORD_UNION           => 'abstract_word_union',
+
+    TYPE_TOKEN_SEPARATOR => 'token_separator',
 
     TYPE_METADATA   => 'metadata',
     TYPE_ASSIGNMENT => 'assignment',
@@ -58,8 +59,8 @@ sub is_abstract_word_union($self) {
     $self->type() eq TYPE_ABSTRACT_WORD_UNION;
 }
 
-sub is_abstract_word_form($self) {
-    $self->type() eq TYPE_ABSTRACT_WORD_FORM;
+sub is_abstract_word_form_separator($self) {
+    $self->type() eq TYPE_ABSTRACT_WORD_FORM_SEPARATOR;
 }
 
 1;

@@ -7,6 +7,9 @@ use ChunkSpec::AST;
 use ChunkSpec::AST::AbstractWord;
 use ChunkSpec::AST::AbstractWordCategory;
 use ChunkSpec::AST::AbstractWordForm;
+use ChunkSpec::AST::AbstractWordParen;
+use ChunkSpec::AST::AbstractWordUnion;
+use ChunkSpec::AST::AbstractWordFormSeparator;
 use ChunkSpec::AST::CommentStatement;
 use ChunkSpec::AST::GrammarChunkStatement;
 
@@ -103,13 +106,21 @@ sub parse_abstract_word_expression($self, $lexer) {
         my $peek = $lexer->peek();
 
         if ($peek->is_abstract_word_left_paren()) {
-            my $ast = ChunkSpec::AST->new();
-            $ast->set_type(ChunkSpec::AST->TYPE_ABSTRACT_WORD_PAREN);
-            $ast->add_child($peek);
+            my $paren = ChunkSpec::AST::AbstractWordParen->new();
+            $paren->add_child($peek);
 
-            $expr->add_child($ast);
+            $expr->add_child($paren);
 
             $lexer->next();
+        }
+        elsif ($peek->is_abstract_word_right_paren()) {
+            my $paren = ChunkSpec::AST::AbstractWordParen->new();
+            $paren->add_child($peek);
+
+            $expr->add_child($paren);
+
+            $lexer->next();
+            last;
         }
         elsif ($peek->is_text()) {
             my $word = $self->parse_abstract_word($lexer);
@@ -117,14 +128,12 @@ sub parse_abstract_word_expression($self, $lexer) {
             $expr->add_child($word);
         }
         elsif ($peek->is_abstract_word_union()) {
-            # Discard it.
-            $lexer->next();
-        }
-        elsif ($peek->is_abstract_word_right_paren()) {
-            # Discard it.
-            $lexer->next();
+            my $union = ChunkSpec::AST::AbstractWordUnion->new();
+            $union->add_child($peek);
 
-            last;
+            $expr->add_child($union);
+
+            $lexer->next();
         }
         else {
             $self->parse_grammar_chunk_statement($lexer);
@@ -148,8 +157,12 @@ sub parse_abstract_word($self, $lexer) {
         $lexer->next();
         $peek = $lexer->peek();
 
-        if ($peek->is_abstract_word_form()) {
-            # Discard it.
+        if ($peek->is_abstract_word_form_separator()) {
+            my $sep = ChunkSpec::AST::AbstractWordFormSeparator->new();
+            $sep->add_child($peek);
+
+            $word->add_child($sep);
+
             $lexer->next();
 
             $peek = $lexer->peek();

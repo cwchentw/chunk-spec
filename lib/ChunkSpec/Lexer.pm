@@ -51,10 +51,10 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
-        elsif (is_abstract_word_form($peek)) {
+        elsif (is_abstract_word_form_separator($peek)) {
             my $t = ChunkSpec::Token->new();
 
-            $t->set_type(ChunkSpec::Token->TYPE_ABSTRACT_WORD_FORM);
+            $t->set_type(ChunkSpec::Token->TYPE_ABSTRACT_WORD_FORM_SEPARATOR);
             $t->set_content($peek);
 
             $t->set_line_number($l);
@@ -215,7 +215,7 @@ sub is_abstract_word_paren($s) {
     $s eq '<' or $s eq '>';
 }
 
-sub is_abstract_word_form($s) {
+sub is_abstract_word_form_separator($s) {
     $s eq ':';
 }
 
@@ -245,7 +245,7 @@ sub is_unknown($s) {
         \n      # Newline
         \;      # Statement
         \<\>    # Abstract word paren
-        \:      # Abstract word form
+        \:      # Abstract word form separator
         \|      # Abstract word union
         \,      # Token sequence
         \&      # Metadata
