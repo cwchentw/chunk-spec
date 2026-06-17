@@ -10,6 +10,7 @@ use ChunkSpec::AST::AbstractWordForm;
 use ChunkSpec::AST::AbstractWordParen;
 use ChunkSpec::AST::AbstractWordUnion;
 use ChunkSpec::AST::AbstractWordFormSeparator;
+use ChunkSpec::AST::Comment;
 use ChunkSpec::AST::CommentStatement;
 use ChunkSpec::AST::GrammarChunkStatement;
 
@@ -43,11 +44,10 @@ sub parse_comment_statement($self, $lexer) {
         my $peek = $lexer->peek();
 
         if ($peek->is_comment()) {
-            my $ast = ChunkSpec::AST->new();        
-            $ast->set_type(ChunkSpec::AST->TYPE_COMMENT);
-            $ast->add_child($peek);
+            my $comment = ChunkSpec::AST::Comment->new();
+            $comment->add_child($peek);
 
-            $stmt->add_child($ast);
+            $stmt->add_child($comment);
 
             $lexer->next();
         }
