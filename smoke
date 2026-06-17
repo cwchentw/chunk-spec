@@ -38,12 +38,11 @@ RUN_TEST EXPECT_SUCCEED "$PROGRAM" -v
 RUN_TEST EXPECT_SUCCEED "$PROGRAM" --version
 RUN_TEST EXPECT_SUCCEED "$PROGRAM" -h
 RUN_TEST EXPECT_SUCCEED "$PROGRAM" --help
-RUN_TEST EXPECT_SUCCEED "$PROGRAM" -m layered demo/japanese-grammar-chunk.txt
-RUN_TEST EXPECT_FAIL "$PROGRAM" -m nested demo/japanese-grammar-chunks.txt
 RUN_TEST EXPECT_FAIL "$PROGRAM" --non-exist
 RUN_TEST EXPECT_FAIL "$PROGRAM"
 RUN_TEST EXPECT_FAIL "$PROGRAM" path/to/non-exist.txt
 RUN_TEST SMOKE_RUN "$PROGRAM" demo/japanese-grammar-chunk.txt
+RUN_TEST SMOKE_RUN "$PROGRAM" demo/korean-grammar-chunk.txt
 
 if [ "$FAILED_TESTS" -ne 0 ]; then
     echo "[Result] $FAILED_TESTS test(s) failed." >&2

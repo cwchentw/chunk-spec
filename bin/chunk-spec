@@ -44,16 +44,6 @@ while (@ARGV) {
         print_help(\*STDOUT);
         exit;
     }
-    elsif ($arg eq '-m' or $arg eq '--mode') {
-        my $mode_arg = shift @ARGV;
-        $arg = shift @ARGV;
-        $mode = validate_mode($mode_arg);
-        if ($mode eq MODE_UNKNOWN) {
-            say { \*STDERR } "Error: Unknown mode: $mode_arg";
-            say { \*STDERR } "Available mode is layered and flat";
-            exit 1;
-        }
-    }
     elsif (index($arg, '-') == 0) {
         say { \*STDERR } "Error: Unknown argument: $arg";
         say { \*STDERR } "";
