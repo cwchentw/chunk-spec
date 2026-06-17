@@ -7,8 +7,8 @@ use ChunkSpec::AST;
 use ChunkSpec::AST::AbstractWord;
 use ChunkSpec::AST::AbstractWordCategory;
 use ChunkSpec::AST::AbstractWordForm;
-use ChunkSpec::AST::Statement;
-use ChunkSpec::AST::GrammarChunk;
+use ChunkSpec::AST::CommentStatement;
+use ChunkSpec::AST::GrammarChunkStatement;
 
 
 sub new($class) {
@@ -34,8 +34,7 @@ sub parse($self, $lexer) {
 }
 
 sub parse_comment_statement($self, $lexer) {
-    my $stmt = ChunkSpec::AST::Statement->new();
-    $stmt->set_type(ChunkSpec::AST::Statement->TYPE_COMMENT_STATEMENT);
+    my $stmt = ChunkSpec::AST::CommentStatement->new();
 
     while ($lexer->has_next()) {
         my $peek = $lexer->peek();
@@ -63,7 +62,7 @@ sub parse_comment_statement($self, $lexer) {
 }
 
 sub parse_grammar_chunk_statement($self, $lexer) {
-    my $stmt = ChunkSpec::AST::GrammarChunk->new();
+    my $stmt = ChunkSpec::AST::GrammarChunkStatement->new();
 
     while ($lexer->has_next()) {
         my $peek = $lexer->peek();
