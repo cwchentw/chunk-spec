@@ -13,6 +13,8 @@ use ChunkSpec::AST::AbstractWordForm;
 use ChunkSpec::AST::AbstractWordParen;
 use ChunkSpec::AST::AbstractWordUnion;
 use ChunkSpec::AST::AbstractWordFormSeparator;
+use ChunkSpec::AST::Metadata;
+use ChunkSpec::AST::MetadataSeparator;
 use ChunkSpec::AST::Comment;
 use ChunkSpec::AST::CommentStatement;
 use ChunkSpec::AST::GrammarChunkStatement;
@@ -77,6 +79,11 @@ sub parse_grammar_chunk_statement($self, $lexer) {
             my $seq = $self->parse_token_sequence($lexer);
 
             $stmt->add_child($seq);
+        }
+        elsif ($peek->is_metadata_separator()) {
+            my $meta = $self->parse_metadata($lexer);
+
+            $stmt->add_child($meta);
         }
         elsif ($peek->is_newline()) {
             # Discard newline.
@@ -220,6 +227,22 @@ sub parse_abstract_word($self, $lexer) {
     }
 
     $word;
+}
+
+sub parse_metadata($self, $lexer) {
+    my $meta = ChunkSpec::AST::Metadata->new();
+
+    my $peek = $lexer->peek();
+    if ($peek->is_metadata_separator()) {
+        my $sep = ChunkSpec::AST::MetadataSeparator->new();
+        $sep->add_child($peek);
+
+        $meta->add_child($sep);
+
+        $lexer->next();
+    }
+
+    $meta;
 }
 
 1;

@@ -10,6 +10,7 @@ use constant {
 
     TYPE_COMMENT        => 'comment',
     TYPE_TOKEN_SEQUENCE => 'token_sequence',
+    TYPE_METADATA       => 'metadata',
 
     TYPE_ABSTRACT_WORD_EXPRESSION     => 'abstract_word_expression',
     TYPE_ABSTRACT_WORD                => 'abstract_word',
@@ -21,6 +22,8 @@ use constant {
 
     TYPE_TOKEN_SEQUENCE_SEPARATOR => 'token_sequence_separator',
     TYPE_TOKEN                    => 'token',
+
+    TYPE_METADATA_SEPARATOR => 'metadata_separator',
 };
 
 
