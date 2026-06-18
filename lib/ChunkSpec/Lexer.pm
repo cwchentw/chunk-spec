@@ -81,10 +81,10 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
-        elsif (is_token_seperator($peek)) {
+        elsif (is_token_sequence_seperator($peek)) {
             my $t = ChunkSpec::Token->new();
 
-            $t->set_type(ChunkSpec::Token->TYPE_TOKEN_SEPARATOR);
+            $t->set_type(ChunkSpec::Token->TYPE_TOKEN_SEQUENCE_SEPARATOR);
             $t->set_content($peek);
 
             $t->set_line_number($l);
@@ -96,10 +96,10 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
-        elsif (is_metadata($peek)) {
+        elsif (is_metadata_separator($peek)) {
             my $t = ChunkSpec::Token->new();
 
-            $t->set_type(ChunkSpec::Token->TYPE_METADATA);
+            $t->set_type(ChunkSpec::Token->TYPE_METADATA_SEPARATOR);
             $t->set_content($peek);
 
             $t->set_line_number($l);
@@ -223,11 +223,11 @@ sub is_abstract_word_union($s) {
     $s eq '|';
 }
 
-sub is_token_seperator($s) {
+sub is_token_sequence_seperator($s) {
     $s eq ',';
 }
 
-sub is_metadata($s) {
+sub is_metadata_separator($s) {
     $s eq '&';
 }
 

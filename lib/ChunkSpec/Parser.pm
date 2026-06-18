@@ -4,6 +4,9 @@ use parent 'Parse::Parser';
 use v5.36;
 
 use ChunkSpec::AST;
+use ChunkSpec::AST::TokenSequence;
+use ChunkSpec::AST::Token;
+use ChunkSpec::AST::TokenSequenceSeparator;
 use ChunkSpec::AST::AbstractWord;
 use ChunkSpec::AST::AbstractWordCategory;
 use ChunkSpec::AST::AbstractWordForm;
@@ -71,9 +74,9 @@ sub parse_grammar_chunk_statement($self, $lexer) {
         my $peek = $lexer->peek();
 
         if ($peek->is_abstract_word_left_paren()) {
-            my $expr = $self->parse_abstract_word_expression($lexer);
+            my $seq = $self->parse_token_sequence($lexer);
 
-            $stmt->add_child($expr);
+            $stmt->add_child($seq);
         }
         elsif ($peek->is_newline()) {
             # Discard newline.
@@ -96,6 +99,44 @@ sub parse_grammar_chunk_statement($self, $lexer) {
     }
 
     $stmt;
+}
+
+sub parse_token_sequence($self, $lexer) {
+    my $seq = ChunkSpec::AST::TokenSequence->new();
+
+    while ($lexer->has_next()) {
+        my $peek = $lexer->peek();
+
+        if ($peek->is_abstract_word_left_paren()) {
+            my $expr = $self->parse_abstract_word_expression($lexer);
+
+            $seq->add_child($expr);
+        }
+        elsif ($peek->is_text()) {
+            my $t = ChunkSpec::AST::Token->new();
+            $t->add_child($peek);
+
+            $seq->add_child($t);
+
+            $lexer->next();
+        }
+        elsif ($peek->is_token_sequence_seperator()) {
+            my $sep = ChunkSpec::AST::TokenSequenceSeparator->new();
+            $sep->add_child($peek);
+
+            $seq->add_child($sep);
+
+            $lexer->next();
+        }
+        elsif ($peek->is_metadata_separator()) {
+            last;
+        }
+        else {
+            last;
+        }
+    }
+
+    $seq;
 }
 
 sub parse_abstract_word_expression($self, $lexer) {

@@ -15,10 +15,11 @@ use constant {
     TYPE_ABSTRACT_WORD_FORM_SEPARATOR  => 'abstract_word_form_seperator',
     TYPE_ABSTRACT_WORD_UNION           => 'abstract_word_union',
 
-    TYPE_TOKEN_SEPARATOR => 'token_separator',
+    TYPE_TOKEN_SEQUENCE_SEPARATOR => 'token_separator',
 
-    TYPE_METADATA   => 'metadata',
-    TYPE_ASSIGNMENT => 'assignment',
+    TYPE_METADATA           => 'metadata',
+    TYPE_METADATA_SEPARATOR => 'metadata_separator',
+    TYPE_ASSIGNMENT         => 'assignment',
 
     TYPE_COMPILER_DIRECTIVE  => 'compiler_directive',
 };
@@ -43,6 +44,14 @@ sub is_newline($self) {
 
 sub is_statement($self) {
     $self->type() eq TYPE_STATEMENT;
+}
+
+sub is_token_sequence_seperator($self) {
+    $self->type eq TYPE_TOKEN_SEQUENCE_SEPARATOR;
+}
+
+sub is_metadata_separator($self) {
+    $self->type eq TYPE_METADATA_SEPARATOR;
 }
 
 sub is_abstract_word_left_paren($self) {
