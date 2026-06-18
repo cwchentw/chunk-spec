@@ -26,6 +26,7 @@ use constant {
 
     TYPE_METADATA_SEPARATOR => 'metadata_separator',
     TYPE_METADATA_KEY       => 'metadata_key',
+    TYPE_METADATA_VALUE     => 'metadata_value',
 };
 
 

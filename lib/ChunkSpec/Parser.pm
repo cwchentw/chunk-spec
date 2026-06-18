@@ -15,6 +15,7 @@ use ChunkSpec::AST::AbstractWordUnion;
 use ChunkSpec::AST::AbstractWordFormSeparator;
 use ChunkSpec::AST::Metadata;
 use ChunkSpec::AST::MetadataKey;
+use ChunkSpec::AST::MetadataValue;
 use ChunkSpec::AST::MetadataSeparator;
 use ChunkSpec::AST::Assignment;
 use ChunkSpec::AST::Comment;
@@ -258,6 +259,15 @@ sub parse_metadata($self, $lexer) {
                 $meta->add_child($assignment);
 
                 $lexer->next();
+                $peek = $lexer->peek();
+                if ($peek->is_text()) {
+                    my $value = ChunkSpec::AST::MetadataValue->new();
+                    $value->add_child($peek);
+
+                    $meta->add_child($value);
+
+                    $lexer->next();
+                }
             }
         }
     }
