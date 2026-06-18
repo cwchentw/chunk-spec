@@ -46,6 +46,10 @@ sub is_statement($self) {
     $self->type() eq TYPE_STATEMENT;
 }
 
+sub is_assignment($self) {
+    $self->type() eq TYPE_ASSIGNMENT;
+}
+
 sub is_token_sequence_seperator($self) {
     $self->type eq TYPE_TOKEN_SEQUENCE_SEPARATOR;
 }

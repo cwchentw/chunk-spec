@@ -5,8 +5,9 @@ use v5.36;
 
 
 use constant {
-    TYPE_STATEMENT => 'statement',
-    TYPE_NEWLINE   => 'newline',
+    TYPE_STATEMENT  => 'statement',
+    TYPE_NEWLINE    => 'newline',
+    TYPE_ASSIGNMENT => 'assignment',
 
     TYPE_COMMENT        => 'comment',
     TYPE_TOKEN_SEQUENCE => 'token_sequence',
@@ -24,6 +25,7 @@ use constant {
     TYPE_TOKEN                    => 'token',
 
     TYPE_METADATA_SEPARATOR => 'metadata_separator',
+    TYPE_METADATA_KEY       => 'metadata_key',
 };
 
 

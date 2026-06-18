@@ -14,7 +14,9 @@ use ChunkSpec::AST::AbstractWordParen;
 use ChunkSpec::AST::AbstractWordUnion;
 use ChunkSpec::AST::AbstractWordFormSeparator;
 use ChunkSpec::AST::Metadata;
+use ChunkSpec::AST::MetadataKey;
 use ChunkSpec::AST::MetadataSeparator;
+use ChunkSpec::AST::Assignment;
 use ChunkSpec::AST::Comment;
 use ChunkSpec::AST::CommentStatement;
 use ChunkSpec::AST::GrammarChunkStatement;
@@ -240,6 +242,24 @@ sub parse_metadata($self, $lexer) {
         $meta->add_child($sep);
 
         $lexer->next();
+        $peek = $lexer->peek();
+        if ($peek->is_text()) {
+            my $key = ChunkSpec::AST::MetadataKey->new();
+            $key->add_child($peek);
+
+            $meta->add_child($key);
+
+            $lexer->next();
+            $peek = $lexer->peek();
+            if ($peek->is_assignment()) {
+                my $assignment = ChunkSpec::AST::Assignment->new();
+                $assignment->add_child($peek);
+
+                $meta->add_child($assignment);
+
+                $lexer->next();
+            }
+        }
     }
 
     $meta;
