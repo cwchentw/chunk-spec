@@ -7,9 +7,13 @@ binmode(STDOUT, ':utf8');
 
 use FindBin;
 use lib "$FindBin::Bin/../lib";
+use local::lib "$FindBin::Bin/../local";
+
+use JSON;
 
 use ChunkSpec::Lexer;
 use ChunkSpec::Parser;
+use ChunkSpec::IR;
 
 
 use constant {
@@ -73,13 +77,9 @@ close $FH;
 my $parser = ChunkSpec::Parser->new();
 $parser->parse($lexer);
 
-while ($parser->has_next()) {
-    my $ast = $parser->peek();
+my $ir = ChunkSpec::IR->new()->emit($parser);
 
-    say $ast->format();
-
-    $parser->next();
-}
+say JSON->new->canonical(0)->encode($ir);
 
 
 sub print_version() {

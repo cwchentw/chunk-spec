@@ -7,6 +7,7 @@ use ChunkSpec::AST;
 use ChunkSpec::AST::TokenSequence;
 use ChunkSpec::AST::Token;
 use ChunkSpec::AST::TokenSequenceSeparator;
+use ChunkSpec::AST::AbstractWordExpression;
 use ChunkSpec::AST::AbstractWord;
 use ChunkSpec::AST::AbstractWordCategory;
 use ChunkSpec::AST::AbstractWordForm;
@@ -150,8 +151,7 @@ sub parse_token_sequence($self, $lexer) {
 }
 
 sub parse_abstract_word_expression($self, $lexer) {
-    my $expr = ChunkSpec::AST->new();
-    $expr->set_type(ChunkSpec::AST->TYPE_ABSTRACT_WORD_EXPRESSION);
+    my $expr = ChunkSpec::AST::AbstractWordExpression->new();
 
     while ($lexer->has_next()) {
         my $peek = $lexer->peek();
