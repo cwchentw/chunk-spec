@@ -44,6 +44,7 @@ RUN_TEST EXPECT_FAIL "$PROGRAM" path/to/non-exist.txt
 RUN_TEST SMOKE_RUN "$PROGRAM" demo/chinese-grammar-chunk.txt
 RUN_TEST SMOKE_RUN "$PROGRAM" demo/japanese-grammar-chunk.txt
 RUN_TEST SMOKE_RUN "$PROGRAM" demo/korean-grammar-chunk.txt
+RUN_TEST SMOKE_RUN "$PROGRAM" demo/korean-punctuation-chunk.txt
 
 if [ "$FAILED_TESTS" -ne 0 ]; then
     echo "[Result] $FAILED_TESTS test(s) failed." >&2

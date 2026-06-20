@@ -14,6 +14,7 @@ use constant {
     TYPE_QUOTE      => 'quote',
 
     TYPE_QUOTE_LITERAL => 'quote_literal',
+    TYPE_QUOTED_STRING => 'quoted_string',
 
     TYPE_COMMENT        => 'comment',
     TYPE_TOKEN_SEQUENCE => 'token_sequence',

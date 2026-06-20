@@ -1,0 +1,3 @@
+# Clause separator
+<Clause>,','&type=punctuation&meaning=clause separator
+&note='Separates clauses or items in a list, improving readability and structure.';

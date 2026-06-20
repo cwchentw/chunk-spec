@@ -11,7 +11,14 @@ sub new($class) {
 }
 
 sub emit_ir($self) {
-    $self->peek()->content();
+    my $peek = $self->peek();
+
+    if ($peek->type() eq ChunkSpec::AST->TYPE_QUOTED_STRING) {
+        substr($self->peek()->content(), 1, -1);
+    }
+    else {
+        $self->peek()->content();
+    }
 }
 
 1;

@@ -28,6 +28,12 @@ sub emit_ir($self) {
             push @{$seq}, $t;
         }
 
+        if ($child->type() eq ChunkSpec::AST->TYPE_QUOTED_STRING) {
+            my $t = $child->emit_ir();
+
+            push @{$seq}, $t;
+        }
+
         $self->next();
     }
 

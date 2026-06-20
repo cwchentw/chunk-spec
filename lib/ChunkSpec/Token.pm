@@ -8,9 +8,9 @@ use constant {
     TYPE_TEXT      => 'text',
     TYPE_STATEMENT => 'statement',
     TYPE_NEWLINE   => 'newline',
-    TYPE_QUOTE     => 'quote',
 
     TYPE_QUOTE_LITERAL => 'quote_literal',
+    TYPE_QUOTED_STRING => 'quoted_string',
 
     TYPE_COMMENT => 'comment',
 
@@ -25,6 +25,8 @@ use constant {
     TYPE_ASSIGNMENT         => 'assignment',
 
     TYPE_COMPILER_DIRECTIVE  => 'compiler_directive',
+
+    TYPE_MALFORMED_QUOTED_STRING => 'malformed_quoted_string',
 };
 
 
@@ -51,6 +53,10 @@ sub is_statement($self) {
 
 sub is_quote_literal($self) {
     $self->type() eq TYPE_QUOTE_LITERAL;
+}
+
+sub is_quoted_string($self) {
+    $self->type() eq TYPE_QUOTED_STRING;
 }
 
 sub is_assignment($self) {

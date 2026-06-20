@@ -2,6 +2,7 @@ package ChunkSpec::Lexer;
 use parent 'Parse::Lexer';
 
 use v5.36;
+use builtin qw(true false);
 
 use ChunkSpec::Token;
 
@@ -46,10 +47,35 @@ sub lex($self, $s, $l) {
                 $j += 2;
             }
             else {
-                $t->set_type(ChunkSpec::Token->TYPE_QUOTE);
-                $t->set_content($peek);
+                my $quoted = false;
+                my $malformed = false;
+                while ($j < $len) {
+                    if (is_quote(substr($s, $j, 1))) {
+                        if ($quoted) {
+                            $j++;
+                            last;
+                        };
 
-                $j++;
+                        $j++;
+                        $quoted = true;
+                    }
+
+                    if (is_newline(substr($s, $j, 1))) {
+                        $malformed = true;
+                        last;
+                    }
+
+                    $j++;
+                }
+
+                if ($malformed) {
+                    $t->set_type(ChunkSpec::Token->TYPE_MALFORMED_QUOTED_STRING);
+                }
+                else {
+                    $t->set_type(ChunkSpec::Token->TYPE_QUOTED_STRING);
+                }
+
+                $t->set_content(substr($s, $i, $j - $i));
             }
 
             $t->set_line_number($l);

@@ -8,6 +8,7 @@ use ChunkSpec::AST;
 use ChunkSpec::AST::TokenSequence;
 use ChunkSpec::AST::Token;
 use ChunkSpec::AST::TokenSequenceSeparator;
+use ChunkSpec::AST::QuotedString;
 use ChunkSpec::AST::AbstractWordExpression;
 use ChunkSpec::AST::AbstractWord;
 use ChunkSpec::AST::AbstractWordCategory;
@@ -93,6 +94,11 @@ sub parse_grammar_chunk_statement($self, $lexer) {
 
             $stmt->add_child($seq);
         }
+        elsif ($peek->is_quoted_string()) {
+            my $seq = $self->parse_token_sequence($lexer);
+
+            $stmt->add_child($seq);
+        }
         elsif ($peek->is_metadata_separator()) {
             my $meta = $self->parse_metadata($lexer);
 
@@ -134,6 +140,14 @@ sub parse_token_sequence($self, $lexer) {
         }
         elsif ($peek->is_text()) {
             my $t = ChunkSpec::AST::Token->new();
+            $t->add_child($peek);
+
+            $seq->add_child($t);
+
+            $lexer->next();
+        }
+        elsif ($peek->is_quoted_string()) {
+            my $t = ChunkSpec::AST::QuotedString->new();
             $t->add_child($peek);
 
             $seq->add_child($t);
@@ -286,7 +300,7 @@ sub parse_metadata($self, $lexer) {
             next;
         }
 
-        if ($peek->is_text() or $peek->is_quote_literal()) {
+        if ($peek->is_text() or $peek->is_quote_literal() or $peek->is_quoted_string()) {
             if ($has_assignment) {
                 $value = ChunkSpec::AST::MetadataValue->new() if (not defined($value));
                 $value->add_child($peek);
