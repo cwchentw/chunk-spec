@@ -3,6 +3,8 @@ use parent 'ChunkSpec::AST';
 
 use v5.36;
 
+use Tie::IxHash;
+
 
 use constant {
     PATTERN  => 'pattern',
@@ -18,30 +20,34 @@ sub new($class) {
 }
 
 sub emit_ir($self) {
-    my $chunk = {};
+    tie my %chunk, 'Tie::IxHash';
 
+    my $line_no;
     while ($self->has_next()) {
         my $child = $self->peek();
 
         if ($child->type() eq ChunkSpec::AST->TYPE_TOKEN_SEQUENCE) {
             my $pattern = $child->emit_ir();
-            my $line_no = $child->emit_line_number();
+            $line_no = $child->emit_line_number();
 
-            $chunk->{+PATTERN} = $pattern;
-            $chunk->{+LINE} = $line_no if ($line_no > 0);
+            $chunk{+PATTERN} = $pattern;
         }
         elsif ($child->type() eq ChunkSpec::AST->TYPE_METADATA) {
-            my $metadata = $child->emit_ir();
+            tie %{$chunk{+METADATA}}, 'Tie::IxHash' if (not defined($chunk{+METADATA}));
 
-            for my ($key, $value) (%{$metadata}) {
-                $chunk->{+METADATA}->{$key} = $value;
+            my $m = $child->emit_ir();
+
+            for my ($key, $value) (%{$m}) {
+                $chunk{+METADATA}{$key} = $value;
             }
         }
 
         $self->next();
     }
 
-    $chunk;
+    $chunk{+LINE} = $line_no if ($line_no > 0);
+
+    \%chunk;
 }
 
 1;

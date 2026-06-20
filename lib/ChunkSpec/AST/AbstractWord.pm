@@ -3,6 +3,8 @@ use parent 'ChunkSpec::AST';
 
 use v5.36;
 
+use Tie::IxHash;
+
 
 use constant {
     CATEGORY => 'category',
@@ -17,7 +19,7 @@ sub new($class) {
 }
 
 sub emit_ir($self) {
-    my $word = {};
+    tie my %word, 'Tie::IxHash';
 
     while ($self->has_next()) {
         my $child = $self->peek();
@@ -25,13 +27,13 @@ sub emit_ir($self) {
         if ($child->type() eq ChunkSpec::AST->TYPE_ABSTRACT_WORD_CATEGORY) {
             my $category = $child->emit_ir();
 
-            $word->{+CATEGORY} = $category;
+            $word{+CATEGORY} = $category;
         }
 
         if ($child->type() eq ChunkSpec::AST->TYPE_ABSTRACT_WORD_FORM) {
             my $form = $child->emit_ir();
 
-            $word->{+FORM} = $form;
+            $word{+FORM} = $form;
         }
 
         $self->next();
@@ -39,7 +41,7 @@ sub emit_ir($self) {
 
     $self->rewind();
 
-    $word;
+    \%word;
 }
 
 sub emit_line_number($self) {
