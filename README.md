@@ -87,9 +87,11 @@ Currently not planned. However, an **Intermediate Representation (IR)** will be 
 
 ```text
 # Polite form expressing the present continuous tense.
-<Verb:Ren'youkei>,て,い,ます&meaning=be doing
+<Verb:Ren''youkei>,て,い,ます&meaning=be doing
 &chunkType=compound_predicate&politeness=formal;
 ```
+
+Single quote `'` must be escaped as `''`.
 
 ### Korean
 
