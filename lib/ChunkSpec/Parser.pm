@@ -2,6 +2,7 @@ package  ChunkSpec::Parser;
 use parent 'Parse::Parser';
 
 use v5.36;
+use builtin qw(true false);
 
 use ChunkSpec::AST;
 use ChunkSpec::AST::TokenSequence;
@@ -197,37 +198,44 @@ sub parse_abstract_word_expression($self, $lexer) {
 sub parse_abstract_word($self, $lexer) {
     my $word = ChunkSpec::AST::AbstractWord->new();
 
-    my $peek = $lexer->peek();
-
-    if ($peek->is_text()) {
-        my $category = ChunkSpec::AST::AbstractWordCategory->new();
-        $category->add_child($peek);
-
-        $word->add_child($category);
-
-        $lexer->next();
+    my $peek;
+    my $has_form = false;
+    my $category;
+    my $sep;
+    my $form;
+    while ($lexer->has_next()) {
         $peek = $lexer->peek();
 
         if ($peek->is_abstract_word_form_separator()) {
-            my $sep = ChunkSpec::AST::AbstractWordFormSeparator->new();
+            $sep = ChunkSpec::AST::AbstractWordFormSeparator->new() if (not defined($sep));
             $sep->add_child($peek);
 
-            $word->add_child($sep);
+            $has_form = true;
 
             $lexer->next();
-
-            $peek = $lexer->peek();
-
-            if ($peek->is_text()) {
-                my $form = ChunkSpec::AST::AbstractWordForm->new();
-                $form->add_child($peek);
-
-                $word->add_child($form);
-
-                $lexer->next();
-            }
+            next;
         }
+
+        if ($peek->is_text() or $peek->is_quote_literal()) {
+            if ($has_form) {
+                $form = ChunkSpec::AST::AbstractWordForm->new() if (not defined($form));
+                $form->add_child($peek);
+            }
+            else {
+                $category = ChunkSpec::AST::AbstractWordCategory->new() if (not defined($category));
+                $category->add_child($peek);
+            }
+
+            $lexer->next();
+            next;
+        }
+
+        last;
     }
+
+    $word->add_child($category) if ($category);
+    $word->add_child($sep) if ($sep);
+    $word->add_child($form) if ($form);
 
     $word;
 }

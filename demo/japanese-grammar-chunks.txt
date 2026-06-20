@@ -1,11 +1,11 @@
 # Japanese grammar chunks in ChunkSpec.
 
 # Present continuous tense (action in progress)
-<Verb:Ren'youkei>,て,い,ます&meaning=be acting something
+<Verb:Ren''youkei>,て,い,ます&meaning=be acting something
 &chunkType=compound_predicate&politeness=formal;
 
 # Completion or regret (action completed)
-<Verb:Ren'youkei>,て,しまう&meaning=completed/ended up doing
+<Verb:Ren''youkei>,て,しまう&meaning=completed/ended up doing
 &chunkType=compound_predicate;
 
 # Negative form (not...)

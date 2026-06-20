@@ -36,6 +36,29 @@ sub lex($self, $s, $l) {
 
             $i = $j;
         }
+        elsif (is_quote($peek)) {
+            my $t = ChunkSpec::Token->new();
+
+            if (substr($s, $j, 2) eq "''") {
+                $t->set_type(ChunkSpec::Token->TYPE_QUOTE_LITERAL);
+                $t->set_content("'");
+
+                $j += 2;
+            }
+            else {
+                $t->set_type(ChunkSpec::Token->TYPE_QUOTE);
+                $t->set_content($peek);
+
+                $j++;
+            }
+
+            $t->set_line_number($l);
+            $t->set_column_number($i + 1);
+
+            $self->add_token($t);
+
+            $i = $j;
+        }
         elsif (is_abstract_word_paren($peek)) {
             my $t = ChunkSpec::Token->new();
 
@@ -211,6 +234,10 @@ sub is_statement($s) {
     $s eq ';';
 }
 
+sub is_quote($s) {
+    $s eq "'";
+}
+
 sub is_abstract_word_paren($s) {
     $s eq '<' or $s eq '>';
 }
@@ -236,7 +263,7 @@ sub is_assignment($s) {
 }
 
 sub is_text($s) {
-    $s =~ /[\'\_\-\p{L}\p{N} \t\/]/;
+    $s =~ /[\_\-\p{L}\p{N} \t\/]/;
 }
 
 sub is_unknown($s) {
@@ -244,6 +271,7 @@ sub is_unknown($s) {
         \#      # Comment
         \n      # Newline
         \;      # Statement
+        \'      # Quote
         \<\>    # Abstract word paren
         \:      # Abstract word form separator
         \|      # Abstract word union

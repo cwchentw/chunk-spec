@@ -8,10 +8,22 @@
                      | "<" <category_expr> ":" <form> ">"
 
 <category_expr>    ::= <category> 
-
                      | <category> "|" <category_expr>
 
 <word>             ::= <string>
+
+<string>           ::= <unquoted_string>
+                     | <quoted_string>
+
+<unquoted_string>  ::= <safe_char> <unquoted_string_tail>
+<unquoted_string_tail> ::= <safe_char> <unquoted_string_tail> | ε
+
+<safe_char>        ::= <letter> | <digit> | "-" | "_" | "."
+
+<quoted_string>    ::= "'" <quoted_body> "'"
+<quoted_body>      ::= <quoted_char> <quoted_body> | ε
+<quoted_char>      ::= <any_char_except_single_quote>
+                     | "''"
 
 <metadata>         ::= "&" <key> "=" <value> <metadata_tail>
 <metadata_tail>    ::= <ws_opt> "&" <key> "=" <value> <metadata_tail>

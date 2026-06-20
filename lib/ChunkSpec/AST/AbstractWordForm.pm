@@ -11,7 +11,19 @@ sub new($class) {
 }
 
 sub emit_ir($self) {
-    $self->peek()->content();
+    my $s = '';
+
+    while ($self->has_next()) {
+        my $peek = $self->peek();
+
+        $s .= $peek->content();
+
+        $self->next();
+    }
+
+    $self->rewind();
+
+    $s;
 }
 
 sub emit_line_number($self) {

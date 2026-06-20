@@ -11,6 +11,9 @@ use constant {
     TYPE_STATEMENT  => 'statement',
     TYPE_NEWLINE    => 'newline',
     TYPE_ASSIGNMENT => 'assignment',
+    TYPE_QUOTE      => 'quote',
+
+    TYPE_QUOTE_LITERAL => 'quote_literal',
 
     TYPE_COMMENT        => 'comment',
     TYPE_TOKEN_SEQUENCE => 'token_sequence',

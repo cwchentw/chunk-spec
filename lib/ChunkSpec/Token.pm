@@ -8,6 +8,9 @@ use constant {
     TYPE_TEXT      => 'text',
     TYPE_STATEMENT => 'statement',
     TYPE_NEWLINE   => 'newline',
+    TYPE_QUOTE     => 'quote',
+
+    TYPE_QUOTE_LITERAL => 'quote_literal',
 
     TYPE_COMMENT => 'comment',
 
@@ -44,6 +47,10 @@ sub is_newline($self) {
 
 sub is_statement($self) {
     $self->type() eq TYPE_STATEMENT;
+}
+
+sub is_quote_literal($self) {
+    $self->type() eq TYPE_QUOTE_LITERAL;
 }
 
 sub is_assignment($self) {
