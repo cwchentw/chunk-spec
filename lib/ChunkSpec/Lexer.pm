@@ -263,7 +263,7 @@ sub is_assignment($s) {
 }
 
 sub is_text($s) {
-    $s =~ /[\_\-\p{L}\p{N} \t\/]/;
+    $s =~ /[\.\?\!\_\-\p{L}\p{N} \t\/]/;
 }
 
 sub is_unknown($s) {
@@ -279,7 +279,7 @@ sub is_unknown($s) {
         \&      # Metadata
         \=      # Assignment
         \@      # Compiler directive
-        '\_\-\p{L}\p{N}\ \t\/  # Text
+        '\.\?\!\_\-\p{L}\p{N}\ \t\/  # Text
     ]/x;
 }
 
