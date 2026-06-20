@@ -243,42 +243,62 @@ sub parse_abstract_word($self, $lexer) {
 sub parse_metadata($self, $lexer) {
     my $meta = ChunkSpec::AST::Metadata->new();
 
-    my $peek = $lexer->peek();
-    if ($peek->is_metadata_separator()) {
-        my $sep = ChunkSpec::AST::MetadataSeparator->new();
-        $sep->add_child($peek);
-
-        $meta->add_child($sep);
-
-        $lexer->next();
+    my $peek;
+    my $has_metadata = false;
+    my $has_assignment = false;
+    my $metadata_separator;
+    my $assignment;
+    my $key;
+    my $value;
+    while ($lexer->has_next()) {
         $peek = $lexer->peek();
-        if ($peek->is_text()) {
-            my $key = ChunkSpec::AST::MetadataKey->new();
-            $key->add_child($peek);
 
-            $meta->add_child($key);
+        if ($peek->is_metadata_separator()) {
+            last if ($has_metadata);
+
+            my $sep = ChunkSpec::AST::MetadataSeparator->new();
+            $sep->add_child($peek);
+            $metadata_separator = $sep;
+
+            $has_metadata = true;
 
             $lexer->next();
-            $peek = $lexer->peek();
-            if ($peek->is_assignment()) {
-                my $assignment = ChunkSpec::AST::Assignment->new();
-                $assignment->add_child($peek);
-
-                $meta->add_child($assignment);
-
-                $lexer->next();
-                $peek = $lexer->peek();
-                if ($peek->is_text()) {
-                    my $value = ChunkSpec::AST::MetadataValue->new();
-                    $value->add_child($peek);
-
-                    $meta->add_child($value);
-
-                    $lexer->next();
-                }
-            }
+            next;
         }
+
+        if ($peek->is_assignment()) {
+            my $a = ChunkSpec::AST::Assignment->new();
+            $a->add_child($peek);
+
+            $assignment = $a;
+
+            $has_assignment = true;
+
+            $lexer->next();
+            next;
+        }
+
+        if ($peek->is_text() or $peek->is_quote_literal()) {
+            if ($has_assignment) {
+                $value = ChunkSpec::AST::MetadataValue->new() if (not defined($value));
+                $value->add_child($peek);
+            }
+            else {
+                $key = ChunkSpec::AST::MetadataKey->new() if (not defined($key));
+                $key->add_child($peek);
+            }
+
+            $lexer->next();
+            next;
+        }
+
+        last;
     }
+
+    $meta->add_child($metadata_separator) if ($metadata_separator);
+    $meta->add_child($key) if ($key);
+    $meta->add_child($assignment) if ($assignment);
+    $meta->add_child($value) if ($value);
 
     $meta;
 }
