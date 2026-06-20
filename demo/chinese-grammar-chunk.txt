@@ -1,0 +1,2 @@
+# Adverbial indicating the desire to perform an action.
+想要,去,<Verb>&meaning=want to act&chunkType=adverbial;

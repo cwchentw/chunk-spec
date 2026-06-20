@@ -40,6 +40,9 @@ sub parse($self, $lexer) {
         elsif ($peek->is_abstract_word_left_paren()) {
             $self->add_ast($self->parse_grammar_chunk_statement($lexer));
         }
+        elsif ($peek->is_text()) {
+            $self->add_ast($self->parse_grammar_chunk_statement($lexer));
+        }
         else {
             # Discard anything else.
             $lexer->next();
@@ -81,6 +84,11 @@ sub parse_grammar_chunk_statement($self, $lexer) {
         my $peek = $lexer->peek();
 
         if ($peek->is_abstract_word_left_paren()) {
+            my $seq = $self->parse_token_sequence($lexer);
+
+            $stmt->add_child($seq);
+        }
+        elsif ($peek->is_text()) {
             my $seq = $self->parse_token_sequence($lexer);
 
             $stmt->add_child($seq);
