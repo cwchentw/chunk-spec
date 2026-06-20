@@ -10,4 +10,8 @@ sub new($class) {
     bless $self, $class;
 }
 
+sub emit_ir($self) {
+    $self->peek()->content();
+}
+
 1;

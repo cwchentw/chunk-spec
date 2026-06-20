@@ -5,8 +5,9 @@ use v5.36;
 
 
 use constant {
-    PATTERN => 'pattern',
-    LINE    => 'line',
+    PATTERN  => 'pattern',
+    METADATA => 'metadata',
+    LINE     => 'line',
 };
 
 
@@ -28,6 +29,13 @@ sub emit_ir($self) {
 
             $chunk->{+PATTERN} = $pattern;
             $chunk->{+LINE} = $line_no if ($line_no > 0);
+        }
+        elsif ($child->type() eq ChunkSpec::AST->TYPE_METADATA) {
+            my $metadata = $child->emit_ir();
+
+            for my ($key, $value) (%{$metadata}) {
+                $chunk->{+METADATA}->{$key} = $value;
+            }
         }
 
         $self->next();
