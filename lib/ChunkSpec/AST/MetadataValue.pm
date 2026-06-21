@@ -11,14 +11,19 @@ sub new($class) {
 }
 
 sub emit_ir($self) {
-    my $peek = $self->peek();
+    my $s = '';
 
-    if ($peek->type() eq ChunkSpec::AST->TYPE_QUOTED_STRING) {
-        substr($self->peek()->content(), 1, -1);
+    while ($self->has_next()) {
+        my $peek = $self->peek();
+
+        $s .= $peek->emit_ir();
+
+        $self->next();
     }
-    else {
-        $self->peek()->content();
-    }
+
+    $self->rewind();
+
+    $s;
 }
 
 1;

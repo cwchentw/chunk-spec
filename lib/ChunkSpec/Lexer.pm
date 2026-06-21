@@ -42,7 +42,6 @@ sub lex($self, $s, $l) {
 
             if (substr($s, $j, 2) eq "''") {
                 $t->set_type(ChunkSpec::Token->TYPE_QUOTE_LITERAL);
-                $t->set_content("'");
 
                 $j += 2;
             }
@@ -74,9 +73,9 @@ sub lex($self, $s, $l) {
                 else {
                     $t->set_type(ChunkSpec::Token->TYPE_QUOTED_STRING);
                 }
-
-                $t->set_content(substr($s, $i, $j - $i));
             }
+
+            $t->set_content(substr($s, $i, $j - $i));
 
             $t->set_line_number($l);
             $t->set_column_number($i + 1);

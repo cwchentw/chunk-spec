@@ -11,7 +11,7 @@ sub new($class) {
 }
 
 sub emit_ir($self) {
-    $self->peek()->content();
+    substr($self->peek()->content(), 0, -1);
 }
 
 sub emit_line_number($self) {

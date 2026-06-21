@@ -16,7 +16,7 @@ sub emit_ir($self) {
     while ($self->has_next()) {
         my $peek = $self->peek();
 
-        $s .= $peek->content();
+        $s .= $peek->emit_ir();
 
         $self->next();
     }
@@ -27,7 +27,7 @@ sub emit_ir($self) {
 }
 
 sub emit_line_number($self) {
-    $self->peek()->line_number();
+    $self->peek()->peek()->line_number();
 }
 
 1;

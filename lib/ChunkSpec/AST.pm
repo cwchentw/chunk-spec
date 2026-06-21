@@ -13,6 +13,7 @@ use constant {
     TYPE_ASSIGNMENT => 'assignment',
     TYPE_QUOTE      => 'quote',
 
+    TYPE_TEXT          => 'text',
     TYPE_QUOTE_LITERAL => 'quote_literal',
     TYPE_QUOTED_STRING => 'quoted_string',
 
@@ -29,11 +30,13 @@ use constant {
     TYPE_ABSTRACT_WORD_FORM_SEPARATOR => 'abstract_word_form_separator',
 
     TYPE_TOKEN_SEQUENCE_SEPARATOR => 'token_sequence_separator',
-    TYPE_TOKEN                    => 'token',
 
     TYPE_METADATA_SEPARATOR => 'metadata_separator',
     TYPE_METADATA_KEY       => 'metadata_key',
     TYPE_METADATA_VALUE     => 'metadata_value',
+
+    TYPE_UNKNOWN_TOKEN           => 'unknown_token',
+    TYPE_MALFORMED_QUOTED_STRING => 'malformed_quoted_string',
 };
 
 

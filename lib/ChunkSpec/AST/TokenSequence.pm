@@ -22,7 +22,7 @@ sub emit_ir($self) {
             push @{$seq}, $expr;
         }
 
-        if ($child->type() eq ChunkSpec::AST->TYPE_TOKEN) {
+        if ($child->type() eq ChunkSpec::AST->TYPE_TEXT) {
             my $t = $child->emit_ir();
 
             push @{$seq}, $t;
@@ -52,7 +52,7 @@ sub emit_line_number($self) {
             $line_no = $child->emit_line_number();
         }
 
-        if ($child->type() eq ChunkSpec::AST->TYPE_TOKEN) {
+        if ($child->type() eq ChunkSpec::AST->TYPE_TEXT) {
             $line_no = $child->emit_line_number();
         }
 

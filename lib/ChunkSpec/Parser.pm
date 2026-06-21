@@ -6,8 +6,9 @@ use builtin qw(true false);
 
 use ChunkSpec::AST;
 use ChunkSpec::AST::TokenSequence;
-use ChunkSpec::AST::Token;
 use ChunkSpec::AST::TokenSequenceSeparator;
+use ChunkSpec::AST::Text;
+use ChunkSpec::AST::QuoteLiteral;
 use ChunkSpec::AST::QuotedString;
 use ChunkSpec::AST::AbstractWordExpression;
 use ChunkSpec::AST::AbstractWord;
@@ -138,21 +139,8 @@ sub parse_token_sequence($self, $lexer) {
 
             $seq->add_child($expr);
         }
-        elsif ($peek->is_text()) {
-            my $t = ChunkSpec::AST::Token->new();
-            $t->add_child($peek);
-
-            $seq->add_child($t);
-
-            $lexer->next();
-        }
-        elsif ($peek->is_quoted_string()) {
-            my $t = ChunkSpec::AST::QuotedString->new();
-            $t->add_child($peek);
-
-            $seq->add_child($t);
-
-            $lexer->next();
+        elsif ($peek->is_text() or $peek->is_quoted_string()) {
+            $seq->add_child($self->parse_value($lexer));
         }
         elsif ($peek->is_token_sequence_seperator()) {
             my $sep = ChunkSpec::AST::TokenSequenceSeparator->new();
@@ -186,6 +174,7 @@ sub parse_abstract_word_expression($self, $lexer) {
             $expr->add_child($paren);
 
             $lexer->next();
+            next;
         }
         elsif ($peek->is_abstract_word_right_paren()) {
             my $paren = ChunkSpec::AST::AbstractWordParen->new();
@@ -200,6 +189,7 @@ sub parse_abstract_word_expression($self, $lexer) {
             my $word = $self->parse_abstract_word($lexer);
 
             $expr->add_child($word);
+            next;
         }
         elsif ($peek->is_abstract_word_union()) {
             my $union = ChunkSpec::AST::AbstractWordUnion->new();
@@ -208,10 +198,10 @@ sub parse_abstract_word_expression($self, $lexer) {
             $expr->add_child($union);
 
             $lexer->next();
+            next;
         }
-        else {
-            $self->parse_grammar_chunk_statement($lexer);
-        }
+
+        last;
     }
 
     $expr;
@@ -241,14 +231,13 @@ sub parse_abstract_word($self, $lexer) {
         if ($peek->is_text() or $peek->is_quote_literal()) {
             if ($has_form) {
                 $form = ChunkSpec::AST::AbstractWordForm->new() if (not defined($form));
-                $form->add_child($peek);
+                $form->add_child($self->parse_value($lexer));
             }
             else {
                 $category = ChunkSpec::AST::AbstractWordCategory->new() if (not defined($category));
-                $category->add_child($peek);
+                $category->add_child($self->parse_value($lexer));
             }
 
-            $lexer->next();
             next;
         }
 
@@ -303,14 +292,13 @@ sub parse_metadata($self, $lexer) {
         if ($peek->is_text() or $peek->is_quote_literal() or $peek->is_quoted_string()) {
             if ($has_assignment) {
                 $value = ChunkSpec::AST::MetadataValue->new() if (not defined($value));
-                $value->add_child($peek);
+                $value->add_child($self->parse_value($lexer));
             }
             else {
                 $key = ChunkSpec::AST::MetadataKey->new() if (not defined($key));
-                $key->add_child($peek);
+                $key->add_child($self->parse_value($lexer));
             }
 
-            $lexer->next();
             next;
         }
 
@@ -323,6 +311,33 @@ sub parse_metadata($self, $lexer) {
     $meta->add_child($value) if ($value);
 
     $meta;
+}
+
+sub parse_value($self, $lexer) {
+    my $v;
+
+    my $peek = $lexer->peek();
+
+    return $v if (not defined ($peek));
+
+    if ($peek->is_text()) {
+        $v = ChunkSpec::AST::Text->new();
+    }
+    elsif ($peek->is_quote_literal()) {
+        $v = ChunkSpec::AST::QuoteLiteral->new();
+    }
+    elsif ($peek->is_quoted_string()) {
+        $v = ChunkSpec::AST::QuotedString->new();
+    }
+    else {
+        $v = ChunkSpec::AST::UnknownToken->new();
+    }
+
+    $v->add_child($peek);
+
+    $lexer->next();
+
+    $v;
 }
 
 1;

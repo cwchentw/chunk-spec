@@ -25,8 +25,6 @@ use constant {
     TYPE_ASSIGNMENT         => 'assignment',
 
     TYPE_COMPILER_DIRECTIVE  => 'compiler_directive',
-
-    TYPE_MALFORMED_QUOTED_STRING => 'malformed_quoted_string',
 };
 
 
