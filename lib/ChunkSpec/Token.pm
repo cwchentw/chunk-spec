@@ -23,8 +23,6 @@ use constant {
     TYPE_METADATA           => 'metadata',
     TYPE_METADATA_SEPARATOR => 'metadata_separator',
     TYPE_ASSIGNMENT         => 'assignment',
-
-    TYPE_COMPILER_DIRECTIVE  => 'compiler_directive',
 };
 
 

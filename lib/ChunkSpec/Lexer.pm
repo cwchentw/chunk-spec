@@ -303,7 +303,6 @@ sub is_unknown($s) {
         \,      # Token sequence
         \&      # Metadata
         \=      # Assignment
-        \@      # Compiler directive
         '\.\?\!\_\-\p{L}\p{N}\ \t\/  # Text
     ]/x;
 }
