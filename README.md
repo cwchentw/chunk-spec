@@ -35,13 +35,17 @@ When implementing rule-based parsers for human languages, JSON is often preferre
 <token sequence>&key1=value1&key2=value2&key3=value3;
 ```
 
-* `#`: Indicates a comment line.
-* `&key=value`: Standard query-string-like syntax to attach customizable metadata to the chunk.
-* `;`: The end of a chunk rule.
-* **Token Sequences**:
-  * `<Verb:TeForm>,て,い,ます`: A sequence of tokens that forms a single grammar chunk.
-  * `<Verb:TeForm>`: An abstract grammatical category (e.g., Part of Speech + Conjugation).
-  * `て`, `い`, `ます`: Literal text or particles to be matched precisely.
+### Syntax Notes
+
+- `#`: Marks a comment line.
+- `&key=value`: Query‑string style syntax for attaching metadata to a chunk.
+- `;`: Indicates the end of a chunk rule.
+- **Token Sequences**:
+  - `<Verb:TeForm>,て,い,ます`: A sequence of tokens forming a grammar chunk.
+  - `<Verb:TeForm>`: An abstract grammatical category (e.g., part of speech + conjugation).
+  - `て`, `い`, `ます`: Literal text or particles that must match exactly.
+- `','`: Quote‑enclosed characters are interpreted as literal text.
+- `''`: Escapes a quote character itself.
 
 ## ChunkSpec to JSON
 
