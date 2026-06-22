@@ -78,6 +78,26 @@ Currently not planned. However, an **Intermediate Representation (IR)** will be 
 
 `ChunkSpec` intentionally omits schema linting. If schema validation is important for your project, simply add a JSON / YAML / TOML schema linter to your pipeline.
 
+## Embedding ChunkSpec in Markdown
+
+ChunkSpec rules can be embedded directly inside a Markdown document using fenced code blocks. This allows the same file to serve both as human‑readable documentation and as machine‑readable corpus data.
+
+````markdown
+# Korean Sentences
+
+```chunkspec
+나는 대만 사람입니다.&meaning=I am Taiwanese.;
+```
+````
+
+To extract and process embedded ChunkSpec rules, use the `md2chunk` tool:
+
+```shell
+$ md2chunk corpus.md
+```
+
+This command scans the Markdown file, collects all chunkspec blocks, and passes them to the standard ChunkSpec parser. The output is JSON, ready for downstream programs.
+
 ## Language Examples
 
 ### Chinese
