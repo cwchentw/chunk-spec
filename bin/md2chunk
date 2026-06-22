@@ -62,7 +62,7 @@ my @chunkspec_lines;
 my $line_number = 1;
 my $lexer = ChunkSpec::Lexer->new();
 while (my $line = <$FH>) {
-    if ($line =~ /^```chunkspec/) {
+    if ($line =~ /^```chunk/) {
         $in_block = 1;
         $line_number++;
         next;

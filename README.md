@@ -85,7 +85,7 @@ ChunkSpec rules can be embedded directly inside a Markdown document using fenced
 ````markdown
 # Korean Sentences
 
-```chunkspec
+```chunk
 나는 대만 사람입니다.&meaning=I am Taiwanese.;
 ```
 ````
