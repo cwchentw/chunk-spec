@@ -40,11 +40,11 @@ RUN_TEST EXPECT_SUCCEED "$PROGRAM" -h
 RUN_TEST EXPECT_SUCCEED "$PROGRAM" --help
 RUN_TEST EXPECT_FAIL "$PROGRAM" --non-exist
 RUN_TEST EXPECT_FAIL "$PROGRAM"
-RUN_TEST EXPECT_FAIL "$PROGRAM" path/to/non-exist.txt
-RUN_TEST SMOKE_RUN "$PROGRAM" demo/chinese-grammar-chunk.txt
-RUN_TEST SMOKE_RUN "$PROGRAM" demo/japanese-grammar-chunk.txt
-RUN_TEST SMOKE_RUN "$PROGRAM" demo/korean-grammar-chunk.txt
-RUN_TEST SMOKE_RUN "$PROGRAM" demo/korean-punctuation-chunk.txt
+RUN_TEST EXPECT_FAIL "$PROGRAM" path/to/non-exist.chunk
+RUN_TEST SMOKE_RUN "$PROGRAM" demo/chinese-grammar-chunk.chunk
+RUN_TEST SMOKE_RUN "$PROGRAM" demo/japanese-grammar-chunk.chunk
+RUN_TEST SMOKE_RUN "$PROGRAM" demo/korean-grammar-chunk.chunk
+RUN_TEST SMOKE_RUN "$PROGRAM" demo/korean-punctuation-chunk.chunk
 
 if [ "$FAILED_TESTS" -ne 0 ]; then
     echo "[Result] $FAILED_TESTS test(s) failed." >&2

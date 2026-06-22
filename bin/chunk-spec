@@ -81,7 +81,7 @@ sub print_version() {
 
 sub print_help($stream) {
     print $stream <<~EOL_HELP
-Usage: $0 [option] grammar-chunk.txt"
+Usage: $0 [option] grammar-rules.chunk"
 
 Option:
     -v    --version    Show version info
