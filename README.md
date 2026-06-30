@@ -40,6 +40,16 @@ In short, ChunkSpec bridges the gap between linguistic intuition and programming
 * **Programmable Meta-Schema Definition**: Not designed to define or modify JSON meta-schemas. The output structure (such as `pattern` and `metadata`) is hardcoded and fixed, avoiding the complexity of schema engines like JSON Schema.
 * **Code-Like Control Structures**: Avoids introducing complex, code-like structures such as full regular expressions or inline executable callbacks, keeping the syntax strictly declarative and data-driven.
 
+## Project Status
+
+The core functionality is complete: happy path to JSON conversion and Markdown embedding.  
+Error reporting and linting are not yet implemented.
+
+ChunkSpec syntax is not finalized. Interested users are welcome to open Issues for discussion.  
+Since this is a prototype, error reporting is missing—please file Issues if you encounter problems.
+
+There is currently no rewrite plan, but it may eventually be rewritten in OCaml or Rust.
+
 ## Grammar & Syntax
 
 ```text
