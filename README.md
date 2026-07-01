@@ -8,9 +8,21 @@ A lightweight, human-readable Domain-Specific Language (DSL) designed to describ
 
 ## Rationale
 
-When implementing rule-based parsers for human languages, JSON is often preferred for defining grammar rules. However, dense JSON files can resemble verbose XML structures, making them cumbersome to write, read, and maintain by hand.
+### Human Language Perspective
 
-`ChunkSpec` provides a line-oriented, human-friendly alternative. Language developers and linguists can easily maintain intuitive rule tables and later compile them into machine-ready JSON files for production parsers.
+When describing grammar rules, linguists often need formats that are intuitive and easy to annotate. JSON or XML can feel overly rigid and verbose, obscuring the natural flow of language data.
+
+ChunkSpec, by contrast, mirrors how humans think about language: token sequences capture stems and endings, while metadata provides semantic roles, conditions, and notes. This makes it easier to maintain grammar tables, describe particles, or even formalize punctuation as part of the rule system.
+
+ChunkSpec is designed to capture semi‑fixed stems and endings in languages like Japanese and Korean, where naive tokenization loses meaning. By merging stems into grammar chunks with metadata, it restores linguistic insight and reflects how speakers naturally perceive grammar patterns.
+
+### Programming Perspective
+
+From a developer’s standpoint, JSON remains the standard for machine‑ready data. However, dense JSON files are cumbersome to hand‑edit and maintain. ChunkSpec offers a line‑oriented, human‑friendly DSL that can be compiled into JSON when needed. Its hybrid structure—token sequence plus query string metadata—keeps rules compact and readable, while still interoperating with existing parsers and toolchains.
+
+---
+
+In short, ChunkSpec bridges the gap between linguistic intuition and programming pragmatism, serving as both a note‑taking DSL and a compiler‑friendly format.
 
 ## Goals and Non-Goals
 
@@ -27,6 +39,16 @@ When implementing rule-based parsers for human languages, JSON is often preferre
 * **Deep Syntactic Parsing**: Not designed to replace full dependency treebank schema or complex generative grammars.
 * **Programmable Meta-Schema Definition**: Not designed to define or modify JSON meta-schemas. The output structure (such as `pattern` and `metadata`) is hardcoded and fixed, avoiding the complexity of schema engines like JSON Schema.
 * **Code-Like Control Structures**: Avoids introducing complex, code-like structures such as full regular expressions or inline executable callbacks, keeping the syntax strictly declarative and data-driven.
+
+## Project Status
+
+The core functionality is complete: happy path to JSON conversion and Markdown embedding.  
+Error reporting and linting are not yet implemented.
+
+ChunkSpec syntax is not finalized. Interested users are welcome to open Issues for discussion.  
+Since this is a prototype, error reporting is missing—please file Issues if you encounter problems.
+
+There is currently no rewrite plan, but it may eventually be rewritten in OCaml or Rust.
 
 ## Grammar & Syntax
 
